@@ -29,6 +29,7 @@ namespace App
         {
             services.AddControllersWithViews();
             services.AddSingleton<ProductInitService>();
+            services.AddSingleton<PlanetService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,9 +55,25 @@ namespace App
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                name: "ViewProduct",
+                pattern: "ViewProduct/{id?}",
+                defaults: new
+                {
+                    controller = "Product",
+                    action = "Detail"
+                }
+            );
+                endpoints.MapAreaControllerRoute
+                (
+                    name: "product",
+                    pattern: "{controller=Product}/{action=Index}/{id?}",
+                    areaName: "ProductManage"
+                );
+                endpoints.MapControllerRoute
+                (
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                );
             });
         }
     }

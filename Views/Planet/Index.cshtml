@@ -1,0 +1,18 @@
+@model List<App.Models.PlanetModel>
+@{
+    ViewData["Title"] = "List planet in solar system";
+    var planets = Model;
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+@if (planets != null)
+{
+    <div class="list-group">
+        @foreach(var planet in planets)
+        {
+            <a class="list-group-item" asp-action="@planet.Name">@planet.Name - @planet.VnName</a>
+        }
+    </div>
+}

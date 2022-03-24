@@ -1,0 +1,19 @@
+@model App.Models.PlanetModel
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<a asp-action="Index" class="btn btn-primary">Back</a>
+
+<h2>@ViewData["Title"]</h2>
+<hr>
+<div class="card" style="width: 25rem;">
+    <img src="~/image/@(Model.Name).jpg" alt="@Model.Name" class="card-img-top">
+    <div class="card-body">
+        <h5 class="card-title">@Model.VnName</h5>
+        <p class="card-text">@Model.Content</p>
+    </div>
+    <div class="card-footer">
+        <a asp-action="Index">List Planet</a>
+    </div>
+</div>

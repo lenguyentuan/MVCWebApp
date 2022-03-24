@@ -16,3 +16,33 @@
 - ViewData
 - ViewBag
 - TempData
+
+## Route
+
+- endpoints.MapControllerRoute
+- endpoints.MapAreaControllerRoute
+- [AcceptVerbs("POST","GET")]
+- [Route("Pattern")]
+- [HttpGet] [HttpPost]
+
+## Url Generation
+
+### UrlHelper: Action, ActionLink, RouteUrl, Link
+
+```
+Url.Action("ActionName","ControllerName" new {area = "areaName", id=.. name=""...})
+```
+
+### HtmlTagHelper: ``` <a> <button> <form>
+
+Attributes are used:
+
+```
+asp-area="Area"
+asp-action="Action"
+asp-controller="Product"
+asp-route...="123"
+asp-route="default" -- default is a route name
+```
+
+Person Access Token: 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

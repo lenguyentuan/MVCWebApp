@@ -11,7 +11,8 @@
     <ul>
         @foreach (var product in products)
         {
-            <li><a asp-controller="Product" asp-action="Detail" asp-route-id="@product.Id">@product.Name - @product.Price</a>
+            <li><a asp-controller="Product" asp-action="Detail" asp-area="ProductManage"
+            asp-route-id="@product.Id">@product.Name - @product.Price</a>
             </li>
         }
     </ul>

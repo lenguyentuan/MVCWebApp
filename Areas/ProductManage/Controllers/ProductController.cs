@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace App.Controllers
 {
+    [Area("ProductManage")]
     public class ProductController : Controller
     {
         private readonly ILogger<ProductController> _logger;
