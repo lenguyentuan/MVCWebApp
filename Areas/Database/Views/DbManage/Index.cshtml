@@ -1,0 +1,73 @@
+@using Microsoft.EntityFrameworkCore
+@{
+    ViewData["Title"] = "Database Manage";
+}
+
+@inject AppDbContext dbContext
+
+<h2>@ViewData["Title"]</h2>
+
+<partial name="_StatusMessage" />
+
+<hr>
+<h4>Database Information</h4>
+@{
+    var connect = dbContext.Database.GetDbConnection();
+    var dbname = connect.Database;
+    var can_connect = dbContext.Database.CanConnect();
+}
+
+<p>Database: @dbname</p>
+<p>Data Source: @connect.DataSource</p>
+<p>State: @connect.State</p>
+
+<h4>Migration List</h4>
+@if (dbContext.Database.GetAppliedMigrations().Any())
+{
+    var migrations = dbContext.Database.GetAppliedMigrations();
+    @foreach (var migration in migrations)
+    {
+        <div class="list-group">
+            <p class="list-group-item">@migration</p>
+        </div>
+    }
+}
+
+@if (dbContext.Database.GetPendingMigrations().Any())
+{
+    var migrations = dbContext.Database.GetPendingMigrations();
+    @foreach (var migration in migrations)
+    {
+        <div class="list-group">
+            <p class="list-group-item">@(migration) (Pending)</p>
+        </div>
+    }
+}
+
+@if (!can_connect)
+{
+    <div class="alert alert-danger">
+        <p>Can not connect to database</p>
+    </div>
+}
+
+@if (can_connect)
+{
+    await dbContext.Database.OpenConnectionAsync();
+    var table = dbContext.Database.GetDbConnection().GetSchema("Tables");
+    <h4>Table list</h4>
+    @foreach (System.Data.DataRow row in table.Rows)
+    {
+        <li>@row["TABLE_NAME"]</li>
+    }
+
+    <div class="mt-2">
+        <a class="btn btn-danger" asp-action="Delete" asp-area="Database">Delete Database </a>
+    </div>
+}
+
+@if (dbContext.Database.GetPendingMigrations().Any())
+{
+    <a class="btn btn-primary" asp-action="Migrate" asp-area="Database">Create Database(Migrate)</a>
+
+}

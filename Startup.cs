@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Models;
 using App.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace App
 {
@@ -30,6 +32,11 @@ namespace App
             services.AddControllersWithViews();
             services.AddSingleton<ProductInitService>();
             services.AddSingleton<PlanetService>();
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                var connectionString = Configuration.GetConnectionString("MvcAppConnectionString");
+                options.UseSqlServer(connectionString);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +61,21 @@ namespace App
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute
+                (
+                    name: "dbManage",
+                    pattern: "{controller}/{action}/{id?}",
+                    areaName: "Database"
+                );
+
+                endpoints.MapAreaControllerRoute
+                (
+                    name: "product",
+                    pattern: "{controller}/{action}/{id?}",
+                    areaName: "ProductManage"
+                );
+
+
                 endpoints.MapControllerRoute(
                 name: "ViewProduct",
                 pattern: "ViewProduct/{id?}",
@@ -63,12 +85,8 @@ namespace App
                     action = "Detail"
                 }
             );
-                endpoints.MapAreaControllerRoute
-                (
-                    name: "product",
-                    pattern: "{controller=Product}/{action=Index}/{id?}",
-                    areaName: "ProductManage"
-                );
+
+
                 endpoints.MapControllerRoute
                 (
                     name: "default",
